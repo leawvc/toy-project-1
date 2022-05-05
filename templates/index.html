@@ -17,19 +17,242 @@
                 integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
                 crossorigin="anonymous"></script>
 
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+        <!--fontawesone -->
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
         <link href="https://hangeul.pstatic.net/hangeul_static/css/NanumGoDigANiGoGoDing.css" rel="stylesheet">
         <link href="{{ url_for('static', filename='frame.css') }}" rel="stylesheet">
 
 
         <link href="/static/mystyle.css" rel="stylesheet">
 
+        <!--네이버 지도 api 사용-->
+        <script type="text/javascript"
+            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ght4pyvb11"></script>
+        <script src=" https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        <style>
+            #map {
+                width: 40%;
+                height: 600px;
+                float: left;
+            }
+
+            .container{
+                margin: 30px;
+            }
+
+            .matjip-list{
+                width: 50%;
+                height: 600px;
+                float: right;
+                overflow: auto
+            }
+
+            .matjip-img{
+                width: 40%;
+                float: left;
+            }
+
+            .matjip-info{
+                width: 60%;
+                float: right;
+            }
+
+
+
+        </style>
+
+        <script>
+            let y_cen = 37.4981125   // lat
+            let x_cen = 127.0379399  // long
+            let map;
+            $(document).ready(function () {
+                map = new naver.maps.Map('map', {
+                    center: new naver.maps.LatLng(y_cen, x_cen),
+                    zoom: 10,
+                    zoomControl: true,
+                    zoomControlOptions: {
+                        style: naver.maps.ZoomControlStyle.SMALL,
+                        position: naver.maps.Position.TOP_RIGHTz
+                    }
+                })
+            })
+
+            function get_matjips(){
+
+            }
+
+            function
+
+            function make_marker(matjip) {
+                let marker = new naver.maps.Marker({
+                    position: new naver.maps.LatLng(matjip['mapy'], matjip['mapx']),
+                    map: map
+                });
+                markers.push(marker)
+                return marker
+
+                let infowindow = new naver.maps.InfoWindow({
+                    content: html_temp,
+                    maxWidth: 200,
+                    backgroundColor: "#fff",
+                    borderColor: "#888",
+                    borderWidth: 2,
+                    anchorSize: new naver.maps.Size(15, 15),
+                    anchorSkew: true,
+                    anchorColor: "#fff",
+                    pixelOffset: new naver.maps.Point(10, -10)
+                });
+
+                infowindows.push(infowindow)
+                naver.maps.Event.addListener(marker, "click", function (e) {
+                    if (infowindow.getMap()) {
+                        infowindow.close();
+                    } else {
+                        infowindow.open(map, marker);
+                        map.set(infowindow.position)
+                        $('#matjip-box').animate({
+                            scrollTop: $('#matjip-box').get(0).scrollTop + $(`#card-${i}`).position().top
+                        }, 2000);
+                    }
+                });
+            }
+
+
+    </script>
     </head>
+
     <body>
         <section class="hero is-small is-white">
             <div class="hero-body has-text-centered">
                 <h1 class="title is-sparta" style="float:left">나만의 맛집</h1>
-                <button class="button is-normal" style="float:right">Logout</button>
+                <button class="button is-normal" style="float:right">MyPage</button>
             </div>
         </section>
+
+        <div class="container">
+            <div id="map"></div>
+
+            <div class="matjip-list">
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="matjip-img">
+                            <img src="https://img2.sbs.co.kr/ops_clip_img/2022/04/11/e14b136f-e98a-44c4-a6ea-a5c22b9f89e0732w640.jpg"
+                                alt="Nothng" width="200" height="200">
+                        </div>
+                        <div class="matjip-info">
+                            <h3 style="font-weight: bold">뽀르께노 스페니쉬 비스트로</h3>
+                            <h4 style="font-size: 20px">어마무시한 학력을 지닌 스페인 요리 셰프 등장!</h4>
+                            <p style="font-size: 15px">서울 성북구 동소문로6길 4-21 (동소문동2가)</p>
+                            <i class="fa fa-bookmark" aria-hidden="true" style="float: right"></i>
+                            <i class="fa fa-bookmark-o" aria-hidden="true" style="float: right"></i>
+                        </div>
+                    </a>
+
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="matjip-img">
+                            <img src="https://img2.sbs.co.kr/ops_clip_img/2022/04/04/2d726b52-1bbe-4c16-a6b0-0ff8c6ffb9d0010w640.jpg"
+                                alt="Nothng" width="200" height="200">
+                        </div>
+                        <div class="matjip-info">
+                            <h3 style="font-weight: bold">탄드르하우스</h3>
+                            <h4 style="font-size: 20px">탄투르 빵 달인, 기포를 없애 찰기 주는 반죽!</h4>
+                            <p style="font-size: 15px">위치경기 안산시 단원구 화랑로 27 (원곡동)</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="matjip-img">
+                            <img src="https://img2.sbs.co.kr/ops_clip_img/2022/04/05/835b899c-7a24-4352-a157-4b9f08df9760741w640.jpg"
+                                alt="Nothng" width="200" height="200">
+                        </div>
+                        <div class="matjip-info">
+                            <h3 style="font-weight: bold">철판핫독</h3>
+                            <h4 style="font-size: 20px">뜨거운 철판 위 핫도그로 사람들 입맛 사로잡은 ‘철판 핫도그 달인’</h4>
+                            <p style="font-size: 15px">경기 광명시 광명로918번길 11-1 (광명동)</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="matjip-img">
+                            <img src="https://img2.sbs.co.kr/ops_clip_img/2022/04/11/e14b136f-e98a-44c4-a6ea-a5c22b9f89e0732w640.jpg"
+                                alt="Nothng" width="200" height="200">
+                        </div>
+                        <div class="matjip-info">
+                            <h3 style="font-weight: bold">뽀르께노 스페니쉬 비스트로</h3>
+                            <h4 style="font-size: 20px">어마무시한 학력을 지닌 스페인 요리 셰프 등장!</h4>
+                            <p style="font-size: 15px">서울 성북구 동소문로6길 4-21 (동소문동2가)</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="matjip-img">
+                            <img src="https://img2.sbs.co.kr/ops_clip_img/2022/04/04/2d726b52-1bbe-4c16-a6b0-0ff8c6ffb9d0010w640.jpg"
+                                alt="Nothng" width="200" height="200">
+                        </div>
+                        <div class="matjip-info">
+                            <h3 style="font-weight: bold">탄드르하우스</h3>
+                            <h4 style="font-size: 20px">탄투르 빵 달인, 기포를 없애 찰기 주는 반죽!</h4>
+                            <p style="font-size: 15px">위치경기 안산시 단원구 화랑로 27 (원곡동)</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="matjip-img">
+                            <img src="https://img2.sbs.co.kr/ops_clip_img/2022/04/05/835b899c-7a24-4352-a157-4b9f08df9760741w640.jpg"
+                                alt="Nothng" width="200" height="200">
+                        </div>
+                        <div class="matjip-info">
+                            <h3 style="font-weight: bold">철판핫독</h3>
+                            <h4 style="font-size: 20px">뜨거운 철판 위 핫도그로 사람들 입맛 사로잡은 ‘철판 핫도그 달인’</h4>
+                            <p style="font-size: 15px">경기 광명시 광명로918번길 11-1 (광명동)</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="matjip-img">
+                            <img src="https://img2.sbs.co.kr/ops_clip_img/2022/04/11/e14b136f-e98a-44c4-a6ea-a5c22b9f89e0732w640.jpg"
+                                alt="Nothng" width="200" height="200">
+                        </div>
+                        <div class="matjip-info">
+                            <h3 style="font-weight: bold">뽀르께노 스페니쉬 비스트로</h3>
+                            <h4 style="font-size: 20px">어마무시한 학력을 지닌 스페인 요리 셰프 등장!</h4>
+                            <p style="font-size: 15px">서울 성북구 동소문로6길 4-21 (동소문동2가)</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="matjip-img">
+                            <img src="https://img2.sbs.co.kr/ops_clip_img/2022/04/04/2d726b52-1bbe-4c16-a6b0-0ff8c6ffb9d0010w640.jpg"
+                                alt="Nothng" width="200" height="200">
+                        </div>
+                        <div class="matjip-info">
+                            <h3 style="font-weight: bold">탄드르하우스</h3>
+                            <h4 style="font-size: 20px">탄투르 빵 달인, 기포를 없애 찰기 주는 반죽!</h4>
+                            <p style="font-size: 15px">위치경기 안산시 단원구 화랑로 27 (원곡동)</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="matjip-img">
+                            <img src="https://img2.sbs.co.kr/ops_clip_img/2022/04/05/835b899c-7a24-4352-a157-4b9f08df9760741w640.jpg"
+                                alt="Nothng" width="200" height="200">
+                        </div>
+                        <div class="matjip-info">
+                            <h3 style="font-weight: bold">철판핫독</h3>
+                            <h4 style="font-size: 20px">뜨거운 철판 위 핫도그로 사람들 입맛 사로잡은 ‘철판 핫도그 달인’</h4>
+                            <p style="font-size: 15px">경기 광명시 광명로918번길 11-1 (광명동)</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
